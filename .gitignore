@@ -1,3 +1,4 @@
 getopt/obj/*
 getopt/bin/*
 .vscode/*
+getopt/.vscode/*
