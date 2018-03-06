@@ -14,7 +14,7 @@ namespace csopt
         public bool isSet;
         string longOpt = null;
         public IEnumerable<string> flags;
-        public Option(IEnumerable<string> flags) => this.flags = flags;
+        public Option(IEnumerable<string> flags) => this.flags = flags ?? throw new System.ArgumentNullException(nameof(flags));
 
         public string getName(){
             if( longOpt == null ){
