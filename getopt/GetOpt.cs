@@ -9,7 +9,7 @@ using System.Text;
  * @license  public domain
  */
 
-namespace csopt
+namespace CS101.Cmd.Util
 {
     class GetOpt {
 

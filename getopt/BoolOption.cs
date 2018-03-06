@@ -7,7 +7,7 @@ using System.Collections.Generic;
  * @license  public domain
  */
 
-namespace csopt
+namespace CS101.Cmd.Util
 {
     class BoolOption : Option
     {
