@@ -29,6 +29,8 @@ namespace CS101.Cmd.Util
             return longOpt;
         }
 
+        public void Reset() => this.isSet = false;
+
         public override string ToString(){
             return this.getName() + " [ "+ isSet + " ] ";
         }

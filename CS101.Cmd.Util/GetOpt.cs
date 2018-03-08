@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using System;
 
 /**
  * The actual flag parser, holding a map of flags connected to the
@@ -48,6 +49,13 @@ namespace CS101.Cmd.Util
             }
             return null;
         }
+
+        public void Reset(){
+            foreach(string k in this.longFlags){
+                Option o = this.options.GetValueOrDefault(k, null);
+                o.Reset();
+            }
+        }
         
         public string[] Parse(string[] argv){
             Option o;
@@ -63,6 +71,8 @@ namespace CS101.Cmd.Util
                             o.isSet = true;
                             (o as StrOption).AddParameter(argv[i + 1]);
                             i++;
+                        }else{
+                            throw new Exception("Missing argument for flag: "+argv[i]);
                         }
                     }
                 }else{

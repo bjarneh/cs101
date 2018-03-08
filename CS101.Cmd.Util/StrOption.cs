@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 /**
- * Holds flags that take one or more parameters.
+ * Holds flag(s) that take one or more parameter(s).
  *
  * @author  bjarneh@ifi.uio.no
  * @license  public domain
@@ -44,5 +44,11 @@ namespace CS101.Cmd.Util
         public string GetOption(){
             return values[0];
         }
+
+        public new void Reset(){
+            base.Reset();
+            values = null;
+        }
+
     }
 }
