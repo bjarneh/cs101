@@ -1,4 +1,7 @@
-getopt/obj/*
-getopt/bin/*
 .vscode/*
-getopt/.vscode/*
+CS101.Cmd.Util/obj/*
+CS101.Cmd.Util/bin/*
+CS101.Cmd.Util/.vscode/*
+CS101.Cmd.Util.Test/obj/*
+CS101.Cmd.Util.Test/bin/*
+CS101.Cmd.Util.Test/.vscode/*

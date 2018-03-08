@@ -11,7 +11,7 @@ using System.Text;
 
 namespace CS101.Cmd.Util
 {
-    class GetOpt {
+    public class GetOpt {
 
         HashSet<string> longFlags;
         Dictionary<string,Option> options;
