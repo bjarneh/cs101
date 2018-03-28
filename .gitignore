@@ -1,4 +1,5 @@
 cs101.code-workspace
+.vs/*
 .vscode/*
 CS101.Cmd.Util/obj/*
 CS101.Cmd.Util/bin/*
@@ -6,3 +7,6 @@ CS101.Cmd.Util/.vscode/*
 CS101.Cmd.Util.Test/obj/*
 CS101.Cmd.Util.Test/bin/*
 CS101.Cmd.Util.Test/.vscode/*
+CS101.IO.Util/obj/*
+CS101.IO.Util/bin/*
+CS101.IO.Util/.vscode/*
