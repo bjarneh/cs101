@@ -19,24 +19,30 @@ namespace CS101.IO.Util
                     Encoding.GetEncoding(outputEnc));
         }
 
-
         public static void Convert(string fileName, Encoding inputEnc, Encoding outputEnc){
-            Stream inputStream = getInputAsStream(fileName, inputEnc);
+            byte[] inputBytes  = getInputBytes(fileName);
+            byte[] outputBytes = Encoding.Convert(inputEnc, outputEnc, inputBytes);
+            writeOutputBytes(fileName, outputBytes);
         }
 
-
-        private static Stream getInputAsStream(string inputFile, Encoding inputEnc){
-            using( MemoryStream binaryWriter = new MemoryStream() ){
-                using( BinaryReader binaryReader = new BinaryReader(File.Open(inputFile, FileMode.Open), inputEnc) ){
-                    binaryReader.BaseStream.CopyTo( binaryWriter );
+        private static byte[] getInputBytes(string fileName){
+            using( MemoryStream mems = new MemoryStream() ){
+                using( FileStream fs = File.Open(fileName, FileMode.Open) ){
+                    fs.CopyTo( mems );
+                    fs.Close();
                 }
-                return binaryWriter;
+                return mems.ToArray();
             }
         }
 
-        private static void writeStreamInEncoding(string fileName, Stream stream, Encoding outputEncoding){
-            using( BinaryWriter binaryWriter = new BinaryWriter(File.Open(fileName, FileMode.Open), outputEncoding)){
-                binaryWriter.BaseStream.CopyTo( stream );
+        private static void writeOutputBytes(string fileName, byte[] bytes){
+            /*
+            using( BinaryWriter binaryWriter = new BinaryWriter(File.Open(fileName, FileMode.Open)) ){
+                binaryWriter.Write(bytes, 0, bytes.Length -1);
+            }
+            */
+            using( var fs = new FileStream( fileName, FileMode.Create, FileAccess.Write)){
+                fs.Write(bytes, 0, bytes.Length);
             }
         }
 

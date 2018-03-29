@@ -23,13 +23,16 @@ namespace CS101.Cmd.Util
 
         options:
         -h --help   : print this menu and exit
-        -f --from   : input encoding (UTF-8,ISO-8859-1,...)
-        -t --to     : output encoding (UTF-8,UTF-16,...)
+        -f --from   : input encoding (utf-8,iso-8859-1,...)
+        -t --to     : output encoding (utf-8,utf-16,...)
+        -l --list   : list available encodings
+        -u --u2i    : alias --from=utf-8 --to=iso-8859-1
+        -i --i2u    : alias --from=iso-8859-1 --to=utf-8
         ";
 
         static void Main(string[] args)
         {
-            string inputFile = null;
+
             string inputStrEnc = null;
             string outputStrEnc = null;
             Encoding inputEncoding = null;
@@ -38,6 +41,9 @@ namespace CS101.Cmd.Util
             var getopt = new GetOpt();
 
             getopt.AddBoolOption(flags: new string[]{"-h","-help","--help"});
+            getopt.AddBoolOption(flags: new string[]{"-l","-list","--list"});
+            getopt.AddBoolOption(flags: new string[]{"-u2i","--u2i"});
+            getopt.AddBoolOption(flags: new string[]{"-i2u","--i2u"});
             getopt.AddStrOption(flags:
                  new string[]{"-f","-f=","-from","-from=","--from","--from="});
             getopt.AddStrOption(flags:
@@ -53,11 +59,26 @@ namespace CS101.Cmd.Util
                 Environment.Exit(0);
             }
 
+            if( getopt.IsSet("--list") ){
+                foreach( EncodingInfo ei in Encoding.GetEncodings() ){
+                    Console.WriteLine( ei.Name );
+                }
+                Environment.Exit(0);
+            }
+
             if( rest.Length == 0 ){
                 Console.Error.WriteLine("No filename given");
                 Environment.Exit(1);
-            }else{
-                inputFile = rest[0];
+            }
+
+            if( getopt.IsSet("-u2i")){
+                inputStrEnc  = "utf-8";
+                outputStrEnc = "iso-8859-1";
+            }
+
+            if( getopt.IsSet("-i2u")){
+                inputStrEnc  = "iso-8859-1";
+                outputStrEnc = "utf-8";
             }
 
             if( getopt.IsSet("-from")){
@@ -80,15 +101,17 @@ namespace CS101.Cmd.Util
             outputEncoding = Encoding.GetEncoding( outputStrEnc );
             inputEncoding  = Encoding.GetEncoding( inputStrEnc );
 
-            Conv.Convert(inputFile, inputEncoding, outputEncoding);
+            if( outputEncoding.Equals(inputEncoding) ){
+                Console.Error.WriteLine("Output encoding equals input encoding, will exit");
+                Environment.Exit(1);
+            }
 
-            /*
             if( rest.Length > 0 ){
                 foreach(string r in rest){
-                    Console.WriteLine($"rest: {r}");
+                    Conv.Convert(r, inputEncoding, outputEncoding);
                 }
             }
-            */
+
             //Console.WriteLine( $" getopt: {getopt}" );
         }
     }
