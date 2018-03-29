@@ -36,11 +36,6 @@ namespace CS101.IO.Util
         }
 
         private static void writeOutputBytes(string fileName, byte[] bytes){
-            /*
-            using( BinaryWriter binaryWriter = new BinaryWriter(File.Open(fileName, FileMode.Open)) ){
-                binaryWriter.Write(bytes, 0, bytes.Length -1);
-            }
-            */
             using( var fs = new FileStream( fileName, FileMode.Create, FileAccess.Write)){
                 fs.Write(bytes, 0, bytes.Length);
             }

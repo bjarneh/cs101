@@ -25,6 +25,7 @@ namespace CS101.Cmd.Util
         -h --help   : print this menu and exit
         -f --from   : input encoding (utf-8,iso-8859-1,...)
         -t --to     : output encoding (utf-8,utf-16,...)
+        -p --print  : print info about what's happening
         -l --list   : list available encodings
         -u --u2i    : alias --from=utf-8 --to=iso-8859-1
         -i --i2u    : alias --from=iso-8859-1 --to=utf-8
@@ -37,6 +38,7 @@ namespace CS101.Cmd.Util
             string outputStrEnc = null;
             Encoding inputEncoding = null;
             Encoding outputEncoding = null;
+            bool printInfo = true;
 
             var getopt = new GetOpt();
 
@@ -44,6 +46,7 @@ namespace CS101.Cmd.Util
             getopt.AddBoolOption(flags: new string[]{"-l","-list","--list"});
             getopt.AddBoolOption(flags: new string[]{"-u2i","--u2i"});
             getopt.AddBoolOption(flags: new string[]{"-i2u","--i2u"});
+            getopt.AddBoolOption(flags: new string[]{"-p","--print"});
             getopt.AddStrOption(flags:
                  new string[]{"-f","-f=","-from","-from=","--from","--from="});
             getopt.AddStrOption(flags:
@@ -60,8 +63,12 @@ namespace CS101.Cmd.Util
             }
 
             if( getopt.IsSet("--list") ){
+                Console.WriteLine("{0,-18} {1,-18} {2}",
+                    "[ Name ]", "[ Body ]", "[ Human ]");
                 foreach( EncodingInfo ei in Encoding.GetEncodings() ){
-                    Console.WriteLine( ei.Name );
+                    var e = ei.GetEncoding();
+                    Console.WriteLine("{0,-18} {1,-18} {2}",
+                        ei.Name, e.BodyName, e.EncodingName );
                 }
                 Environment.Exit(0);
             }
@@ -79,6 +86,10 @@ namespace CS101.Cmd.Util
             if( getopt.IsSet("-i2u")){
                 inputStrEnc  = "iso-8859-1";
                 outputStrEnc = "utf-8";
+            }
+
+            if( getopt.IsSet("-print")){
+                printInfo = true;
             }
 
             if( getopt.IsSet("-from")){
@@ -108,6 +119,10 @@ namespace CS101.Cmd.Util
 
             if( rest.Length > 0 ){
                 foreach(string r in rest){
+                    if( printInfo ){
+                        Console.WriteLine("Converting: {0} : {1} => {2}",
+                                 r, inputEncoding.BodyName, outputEncoding.BodyName);
+                    }
                     Conv.Convert(r, inputEncoding, outputEncoding);
                 }
             }
