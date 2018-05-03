@@ -26,6 +26,7 @@ namespace CS101.Cmd.Util
         -f --from   : input encoding (utf-8,iso-8859-1,...)
         -t --to     : output encoding (utf-8,utf-16,...)
         -p --print  : print info about what's happening
+        -a --asm    : print assembly version
         -l --list   : list available encodings
         -u --u2i    : alias --from=utf-8 --to=iso-8859-1
         -i --i2u    : alias --from=iso-8859-1 --to=utf-8
@@ -46,7 +47,8 @@ namespace CS101.Cmd.Util
             getopt.AddBoolOption(flags: new string[]{"-l","-list","--list"});
             getopt.AddBoolOption(flags: new string[]{"-u2i","--u2i"});
             getopt.AddBoolOption(flags: new string[]{"-i2u","--i2u"});
-            getopt.AddBoolOption(flags: new string[]{"-p","--print"});
+            getopt.AddBoolOption(flags: new string[]{"-p","-print","--print"});
+            getopt.AddBoolOption(flags: new string[]{"-a","-asm","--asm"});
             getopt.AddStrOption(flags:
                  new string[]{"-f","-f=","-from","-from=","--from","--from="});
             getopt.AddStrOption(flags:
@@ -70,6 +72,12 @@ namespace CS101.Cmd.Util
                     Console.WriteLine("{0,-18} {1,-18} {2}",
                         ei.Name, e.BodyName, e.EncodingName );
                 }
+                Environment.Exit(0);
+            }
+
+            if( getopt.IsSet("-asm") ){
+                var asm = System.Reflection.Assembly.GetExecutingAssembly();
+                Console.WriteLine($"Assembly: {asm}");
                 Environment.Exit(0);
             }
 
